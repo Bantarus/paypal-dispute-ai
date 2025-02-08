@@ -179,13 +179,28 @@ Best regards,
 
   const filteredDisputes = disputes.filter(dispute => {
     const searchTerm = filter.toLowerCase().trim();
+    
+    // If search term is empty, show all disputes
+    if (!searchTerm) return true;
+
+    // Convert amount to string for comparison
+    const amountString = `${dispute.currency} ${dispute.amount}`.toLowerCase();
+    
+    // Convert dates to localized strings for comparison
+    const createdDate = new Date(dispute.created_at).toLocaleDateString().toLowerCase();
+    const dueDate = new Date(dispute.response_due_date).toLocaleDateString().toLowerCase();
+
+    // For all fields, use includes for partial matches
     return (
-      dispute.id.toLowerCase().includes(searchTerm) ||
-      dispute.buyer_email.toLowerCase().includes(searchTerm) ||
-      dispute.reason.toLowerCase().includes(searchTerm) ||
-      dispute.status.toLowerCase().includes(searchTerm) ||
-      dispute.details.buyer_complaint.toLowerCase().includes(searchTerm) ||
-      dispute.details.order_details.item_name.toLowerCase().includes(searchTerm)
+        dispute.id.toLowerCase().includes(searchTerm) ||
+        dispute.buyer_email.toLowerCase().includes(searchTerm) ||
+        dispute.reason.toLowerCase().includes(searchTerm) ||
+        dispute.status.toLowerCase().includes(searchTerm) ||
+        dispute.details.buyer_complaint.toLowerCase().includes(searchTerm) ||
+        dispute.details.order_details.item_name.toLowerCase().includes(searchTerm) ||
+        amountString.includes(searchTerm) ||
+        createdDate.includes(searchTerm) ||
+        dueDate.includes(searchTerm)
     );
   });
 
