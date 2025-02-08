@@ -4,11 +4,12 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react(), tailwindcss()],
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src")
-    }
-  }
-})
+    alias: [
+      { find: '@', replacement: path.resolve(__dirname, 'src') }
+    ]
+  },
+  base: command === 'serve' ? '/' : '/paypal-dispute-ai/'
+}))

@@ -177,11 +177,17 @@ Best regards,
     setEditedResponse('');
   };
 
-  const filteredDisputes = disputes.filter(dispute =>
-    dispute.id.toLowerCase().includes(filter.toLowerCase()) ||
-    dispute.buyer_email.toLowerCase().includes(filter.toLowerCase()) ||
-    dispute.reason.toLowerCase().includes(filter.toLowerCase())
-  );
+  const filteredDisputes = disputes.filter(dispute => {
+    const searchTerm = filter.toLowerCase().trim();
+    return (
+      dispute.id.toLowerCase().includes(searchTerm) ||
+      dispute.buyer_email.toLowerCase().includes(searchTerm) ||
+      dispute.reason.toLowerCase().includes(searchTerm) ||
+      dispute.status.toLowerCase().includes(searchTerm) ||
+      dispute.details.buyer_complaint.toLowerCase().includes(searchTerm) ||
+      dispute.details.order_details.item_name.toLowerCase().includes(searchTerm)
+    );
+  });
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
