@@ -1,4 +1,4 @@
-import DisputeDashboard from './components/DisputeDashboard'
+import DisputeDashboard from '@/components/DisputeDashboard'
 
 function App() {
   return (

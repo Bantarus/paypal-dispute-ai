@@ -5,12 +5,34 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Filter, RefreshCw, MessageSquare, Check, X } from 'lucide-react';
 
+interface Dispute {
+  id: string;
+  status: string;
+  amount: number;
+  currency: string;
+  reason: string;
+  buyer_email: string;
+  created_at: string;
+  response_due_date: string;
+  details: {
+    tracking_number?: string;
+    shipping_carrier?: string;
+    shipping_date?: string;
+    buyer_complaint: string;
+    order_details: {
+      item_name: string;
+      item_price: number;
+      order_date: string;
+    }
+  }
+}
+
 const DisputeDashboard = () => {
-  const [disputes, setDisputes] = useState([]);
+  const [disputes, setDisputes] = useState<Dispute[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState('');
-  const [selectedDispute, setSelectedDispute] = useState(null);
+  const [selectedDispute, setSelectedDispute] = useState<Dispute | null>(null);
   const [aiResponse, setAiResponse] = useState('');
   const [processingResponse, setProcessingResponse] = useState(false);
   const [editedResponse, setEditedResponse] = useState('');
@@ -75,10 +97,10 @@ const DisputeDashboard = () => {
     fetchDisputes();
   }, []);
 
-  const generateAIResponse = async (dispute) => {
+  const generateAIResponse = async (dispute: Dispute) => {
     setProcessingResponse(true);
     try {
-      // Here you would make an API call to your AI service
+      // Here we would make an API call to our AI service
       // For example, using OpenAI's API:
       /*
       const response = await fetch('your-ai-api-endpoint', {
@@ -132,14 +154,14 @@ Best regards,
     }
   };
 
-  const handleRespond = (dispute) => {
+  const handleRespond = (dispute: Dispute) => {
     setSelectedDispute(dispute);
     generateAIResponse(dispute);
   };
 
   const handleSubmitResponse = async () => {
     try {
-      // Here you would send the response to PayPal's API
+      // Here we would send the response to PayPal's API
       console.log('Submitting response:', editedResponse);
       setSelectedDispute(null);
       setAiResponse('');
@@ -190,7 +212,7 @@ Best regards,
             <Input
               placeholder="Filter disputes..."
               value={filter}
-              onChange={(e) => setFilter(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter(e.target.value)}
               className="max-w-sm"
             />
           </div>
